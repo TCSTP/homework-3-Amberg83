@@ -7,10 +7,16 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -18,15 +24,21 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import tcs.app.dev.R
+import tcs.app.dev.homework1.data.Cart
 import tcs.app.dev.homework1.data.Discount
 import tcs.app.dev.homework1.data.MockData
+import tcs.app.dev.homework1.data.Shop
+import tcs.app.dev.homework1.data.plus
 
 @Composable
 fun BundleRow(
     item: Discount.Bundle,
+    shop: Shop,
     modifier: Modifier = Modifier,
     onSelected: () -> Unit = {}
 ) {
+    var cart by rememberSaveable { mutableStateOf(Cart(shop = shop)) }
+
     val border = BorderStroke(
         width = 1.dp,
         color = MaterialTheme.colorScheme.primary
@@ -68,7 +80,18 @@ fun BundleRow(
                     .weight(1f)
                     .padding(horizontal = 16.dp)
             )
-
+            IconButton(
+                modifier = Modifier.padding(end = 8.dp),
+                content = {
+                    Icon(
+                        painterResource(R.drawable.cartbutton),
+                        contentDescription = null,
+                        modifier = Modifier.padding(all = 5.dp),
+                        tint = MaterialTheme.colorScheme.onPrimary
+                    )
+                },
+                onClick = { cart.plus(item) }
+            )
 
         }
     }
@@ -77,9 +100,11 @@ fun BundleRow(
 @Composable
 fun FixedRow(
     item: Discount.Fixed,
+    shop: Shop,
     modifier: Modifier = Modifier,
     onSelected: () -> Unit = {}
 ) {
+    var cart by rememberSaveable { mutableStateOf(Cart(shop = shop)) }
     val border = BorderStroke(
         width = 1.dp,
         color = MaterialTheme.colorScheme.primary
@@ -116,7 +141,18 @@ fun FixedRow(
                     .weight(1f)
                     .padding(horizontal = 16.dp)
             )
-
+            IconButton(
+                modifier = Modifier.padding(end = 8.dp),
+                content = {
+                    Icon(
+                        painterResource(R.drawable.cartbutton),
+                        contentDescription = null,
+                        modifier = Modifier.padding(all = 5.dp),
+                        tint = MaterialTheme.colorScheme.onPrimary
+                    )
+                },
+                onClick = { cart.plus(item) }
+            )
 
         }
     }
@@ -125,9 +161,11 @@ fun FixedRow(
 @Composable
 fun PercentageRow(
     item: Discount.Percentage,
+    shop: Shop,
     modifier: Modifier = Modifier,
     onSelected: () -> Unit = {}
 ) {
+    var cart by rememberSaveable { mutableStateOf(Cart(shop = shop)) }
     val border = BorderStroke(
         width = 1.dp,
         color = MaterialTheme.colorScheme.primary
@@ -164,7 +202,18 @@ fun PercentageRow(
                     .weight(1f)
                     .padding(horizontal = 16.dp)
             )
-
+            IconButton(
+                modifier = Modifier.padding(end = 8.dp),
+                content = {
+                    Icon(
+                        painterResource(R.drawable.cartbutton),
+                        contentDescription = null,
+                        modifier = Modifier.padding(all = 5.dp),
+                        tint = MaterialTheme.colorScheme.onPrimary
+                    )
+                },
+                onClick = { cart.plus(item) }
+            )
 
         }
     }

@@ -20,48 +20,43 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import tcs.app.dev.R
+import tcs.app.dev.homework1.data.Cart
 import tcs.app.dev.homework1.data.Euro
 import tcs.app.dev.homework1.data.Item
 import tcs.app.dev.homework1.data.MockData
-import tcs.app.dev.ui.theme.AppTheme
-import tcs.app.dev.R
-import tcs.app.dev.homework1.data.Cart
 import tcs.app.dev.homework1.data.Shop
 import tcs.app.dev.homework1.data.plus
-
+import tcs.app.dev.homework1.data.times
+import tcs.app.dev.ui.theme.AppTheme
 
 @Composable
-fun ItemRow(
+fun CartRow(
     item: Item,
     price: Euro,
-    shop: Shop,
+    amount: UInt,
     modifier: Modifier = Modifier,
 ) {
-    ItemRow(
+    val itemTotal = price * amount
+
+    CartRow(
         image = { modifier -> Image(painterResource(MockData.getImage(item)), contentDescription = null, modifier = modifier) },
         title = { modifier -> Text(item.id, modifier = modifier) },
-        price =  { modifier -> Text(price.toString(), modifier = modifier) },
-        item = item,
-        shop = shop,
+        price =  { modifier -> Text(itemTotal.toString(), modifier = modifier) },
         modifier = modifier
     )
 }
 
 
 @Composable
-fun ItemRow(
+fun CartRow(
     image: @Composable (Modifier) -> Unit,
     title: @Composable (Modifier) -> Unit,
     price: @Composable (Modifier) -> Unit,
-    item: Item,
-    shop: Shop,
     modifier: Modifier = Modifier,
-    onSelected: () -> Unit = {}
 ) {
     val border = BorderStroke(
         width = 1.dp,
@@ -70,7 +65,6 @@ fun ItemRow(
 
     val color = MaterialTheme.colorScheme.primaryContainer
 
-    var cart by rememberSaveable { mutableStateOf(Cart(shop = shop)) }
 
     Surface(
         modifier = modifier
@@ -105,36 +99,16 @@ fun ItemRow(
                     .padding(horizontal = 16.dp)
             )
 
-            IconButton(
-                modifier = Modifier.padding(end = 8.dp),
-                content = {
-                    Icon(
-                        painterResource(R.drawable.cartbutton),
-                        contentDescription = null,
-                        modifier = Modifier.padding(all = 5.dp),
-                        tint = MaterialTheme.colorScheme.onPrimary
-                    )
-                },
-                onClick = { cart.plus(item) }
-            )
+
         }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun RadioRowSelectedPreview() {
+fun CartRowSelectedPreview() {
     val shop = MockData.ExampleShop
     AppTheme {
-        ItemRow(MockData.Banana, shop.prices.getValue(MockData.Banana), shop)
+        CartRow(MockData.Banana, shop.prices.getValue(MockData.Banana), 3U)
     }
 }
-
-//@Preview(showBackground = true)
-//@Composable
-//fun RadioRowNotSelectedPreview() {
-//    AppTheme {
-//        RadioRow(option = LMU, selected = false)
-//    }
-//}
-

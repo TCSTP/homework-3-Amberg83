@@ -21,6 +21,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -30,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import tcs.app.dev.R
 import tcs.app.dev.exercise.university.data.Option
 import tcs.app.dev.exercise.university.solution.RadioRow
+import tcs.app.dev.homework1.data.Cart
 import tcs.app.dev.homework1.data.Euro
 import tcs.app.dev.homework1.data.Item
 import tcs.app.dev.homework1.data.MockData.ExampleShop
@@ -39,6 +45,10 @@ import tcs.app.dev.ui.theme.AppTheme
 
 @Composable
 fun ShopItemTab (title: String, shop: Shop, modifier: Modifier = Modifier) {
+
+    var cart by rememberSaveable { mutableStateOf(Cart(shop = shop)) }
+    var state by rememberSaveable { mutableIntStateOf(0) }
+
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -98,7 +108,7 @@ fun ShopItemTab (title: String, shop: Shop, modifier: Modifier = Modifier) {
                         style = MaterialTheme.typography.titleLarge)
                 }
                 TextButton(
-                    onClick = { },
+                    onClick = { state = 1 },
                     modifier = Modifier
                         .weight(1f),
                     colors = buttonColors(
@@ -127,8 +137,10 @@ fun ShopItemTab (title: String, shop: Shop, modifier: Modifier = Modifier) {
                 for (content in shop.prices) {
                     item {
                         ItemRow(
-                        item = content.key,
-                        price = content.value)
+                            item = content.key,
+                            price = content.value,
+                            shop = shop
+                        )
                     }
                 }
             }
